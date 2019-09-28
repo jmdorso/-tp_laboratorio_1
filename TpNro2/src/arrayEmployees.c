@@ -173,7 +173,7 @@ int imprimirArrayEmployees(Employee *aArray, int cantidad)
 {
 	int i;
 	int retorno = -1;
-	char sectorEmpleado[3][25] = {"COMPRAS","MANUFACTURA","VENTAS"};
+	char sectorEmpleado[3][25] = {"Compras","Manufactura","Ventas"};
 
 	if(aArray != NULL && cantidad>0)
 	{
@@ -193,7 +193,7 @@ int imprimirArrayEmployeesStatusOk(Employee *aArray, int cantidad)
 {
 	int i;
 	int retorno = -1;
-	char sectorEmpleado[3][25] = {"COMPRAS","MANUFACTURA","VENTAS"};
+	char sectorEmpleado[3][25] = {"Compras","Manufactura","Ventas"};
 
 	if(aArray != NULL && cantidad>0)
 	{
@@ -229,3 +229,40 @@ int bajaEmployeePorId(Employee *aArray, int cantidad,int id)
 	return retorno;
 }
 
+int ordenarArrayEmployees(Employee *aArray, int cantidad)
+{
+	int i;
+	int retorno = EXIT_ERROR;
+	Employee buffer;
+	int fSwap;
+
+	if(aArray != NULL && cantidad>0)
+	{
+		retorno = EXIT_SUCCESS;
+		do
+		{
+			fSwap = 0;
+			for(i=0;i<cantidad-1;i++)
+			{
+				if(strncmp(aArray[i].lastName,aArray[i+1].lastName,CANT_CARACTERES)>0 && aArray[i].status == STATUS_NOT_EMPTY)
+				{
+					fSwap = 1;
+					buffer = aArray[i];
+					aArray[i]=aArray[i+1];
+					aArray[i+1]=buffer;
+				}
+				else if(strncmp(aArray[i].lastName,aArray[i+1].lastName,CANT_CARACTERES)==0 && aArray[i].status == STATUS_NOT_EMPTY)
+				{
+					if(aArray[i].sector > aArray[i+1].sector && aArray[i].status == STATUS_NOT_EMPTY)
+						{
+						fSwap = 1;
+						buffer = aArray[i];
+						aArray[i]=aArray[i+1];
+						aArray[i+1]=buffer;
+					}
+				}
+			}
+		}while(fSwap==1);
+	}
+	return retorno;
+}

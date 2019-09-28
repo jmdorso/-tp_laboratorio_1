@@ -31,7 +31,7 @@ int main(void)
 	int auxId;
 
 	initLugarLibreEmployees(aEmployee,CANT_EMPLEADOS);
-	imprimirArrayEmployees(aEmployee,10);
+	imprimirArrayEmployees(aEmployee,5);
 
 	do
 	{
@@ -51,7 +51,7 @@ int main(void)
 	    				if(altaUnSoloEmployee(&unEmpleado)==EXIT_SUCCESS)
 	    				{
 	    					altaEmployeePorId(aEmployee,CANT_EMPLEADOS,unEmpleado);
-		    				imprimirArrayEmployeesStatusOk(aEmployee,10);
+		    				imprimirArrayEmployeesStatusOk(aEmployee,CANT_EMPLEADOS);
 		    				flagAlta=ALTA_OK;
 	    				}
 	    				break;
@@ -66,20 +66,35 @@ int main(void)
 	    				getInt(&auxId,"\nIngrese el ID: ","\nError\n",1,CANT_EMPLEADOS,CANT_REINTENTOS);
 	    				unEmpleado.idEmployee = auxId;
 	    				auxId = buscarEmployeePorId(aEmployee,CANT_EMPLEADOS,unEmpleado.idEmployee);
-	    				printf("Quiere Eliminar el siguiente empleado: \n");
-	    				printf("Nombre: %s - Apellido: %s - ID: %d",aEmployee[auxId].name,aEmployee[auxId].lastName,aEmployee[auxId].idEmployee);
-	    				getChar(&confirmarBaja,
-	    						"\nSeguro desea dar de baja? Ingrese s (o cualquier tecla para continuar): ",
-								"\nERROR. Verifique si ingreso una letra y/o desactive mayuscula\n",
-								'a',
-								'z',
-								CANT_REINTENTOS);
-                    	if(confirmarBaja == 's' || confirmarBaja == 'S')
-                    	{
-    	    				bajaEmployeePorId(aEmployee,CANT_EMPLEADOS,unEmpleado.idEmployee);
-                    	}
+	    				if(aEmployee[auxId].status== STATUS_NOT_EMPTY)
+	    				{
+		    				printf("Quiere Eliminar el siguiente empleado: \n");
+		    				printf("Nombre: %s - Apellido: %s - ID: %d",aEmployee[auxId].name,aEmployee[auxId].lastName,aEmployee[auxId].idEmployee);
+		    				getChar(&confirmarBaja,
+		    						"\nSeguro desea dar de baja? Ingrese s (o cualquier tecla para continuar): ",
+									"\nERROR. Verifique si ingreso una letra y/o desactive mayuscula\n",
+									'a',
+									'z',
+									CANT_REINTENTOS);
+	                    	if(confirmarBaja == 's' || confirmarBaja == 'S')
+	                    	{
+	    	    				bajaEmployeePorId(aEmployee,CANT_EMPLEADOS,unEmpleado.idEmployee);
+	    	    				printf("\nBAJA EXITOSA\ņ\ņ");
+	                    	}
+	    				}
+	    				else
+	    				{
+	    					printf("\n\nNo existe empleado con ese ID\n\n");
+	    				}
 	    				break;
 	    		case 4:
+    					if(flagAlta == ALTA_DNS)
+    					{
+    					printf("\nERROR. Falta ingresar al menos un empleado.\n\n");
+    					break;
+    					}
+    					ordenarArrayEmployees(aEmployee,CANT_EMPLEADOS);
+    					imprimirArrayEmployeesStatusOk(aEmployee,CANT_EMPLEADOS);
 	    				break;
 	    		case 5:
 	    				getChar(&salir,

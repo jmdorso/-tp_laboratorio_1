@@ -38,7 +38,7 @@ int altaUnSoloEmployee(Employee *employee);
 int imprimirArrayEmployees(Employee *aArray, int cantidad);
 int imprimirArrayEmployeesStatusOk(Employee *aArray, int cantidad);
 int bajaEmployeePorId(Employee *aArray, int cantidad,int id);
-
+int ordenarArrayEmployees(Employee *aArray, int cantidad);
 
 
 #endif /* ARRAYEMPLOYEES_H_ */
