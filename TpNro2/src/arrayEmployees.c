@@ -135,7 +135,13 @@ int buscarEmployeePorId(Employee *aArray, int cantidad,int id)
 	return retorno;
 }
 
-int altaUnSoloEmployee(Employee *employee)
+/** \brief le damos de alta a un empleado a traves de interaccion con el usuario
+ * \param *employee una variable del tipo Employee
+ * \return -1 si hay algun error o 0 si esta bien
+ *
+ */
+
+int altaUnSoloEmployeePorUI(Employee *employee)
 {
 	int retorno = EXIT_ERROR;
 	char bufferName[CANT_CARACTERES];
@@ -169,17 +175,24 @@ int altaUnSoloEmployee(Employee *employee)
 	return retorno;
 }
 
+/** \brief imprime el array completo sin exepciones de campos
+ * \param *aArray es el array de empleados
+ * \param cantidad es la cantidad de elementos del array
+ * \return -1 si hay algun error o 0 si esta bien
+ *
+ */
+
 int imprimirArrayEmployees(Employee *aArray, int cantidad)
 {
 	int i;
-	int retorno = -1;
+	int retorno = EXIT_ERROR;
 	char sectorEmpleado[3][25] = {"Compras","Manufactura","Ventas"};
 
 	if(aArray != NULL && cantidad>0)
 	{
-		retorno = 0;
+		retorno = EXIT_SUCCESS;
 		printf("\n--------------------------------LISTA DE EMPLEADOS--------------------------------\n");
-		printf("%6s | %3s | %15s | %15s | %12s | %11s\n","Status","ID","Nombre","Apellido","Salario","Sector");
+		printf("%6s | %3s | %15s | %15s | %12s | %11s\n","STATUS","ID","NOMBRE","APELLIDO","SALARIO","SECTOR");
 		for(i=0;i<cantidad;i++)
 		{
 			printf("%6d | %3d | %15s | %15s | $ %10.2f | %11s\n",
@@ -189,17 +202,24 @@ int imprimirArrayEmployees(Employee *aArray, int cantidad)
 	return retorno;
 }
 
+/** \brief imprime elementos del array con el campo stado NOT EMPTY(es decir elementos cargados)
+ * \param *aArray es el array de empleados
+ * \param cantidad es la cantidad de elementos del array
+ * \return -1 si hay algun error o 0 si esta bien
+ *
+ */
+
 int imprimirArrayEmployeesStatusOk(Employee *aArray, int cantidad)
 {
 	int i;
-	int retorno = -1;
+	int retorno = EXIT_ERROR;
 	char sectorEmpleado[3][25] = {"Compras","Manufactura","Ventas"};
 
 	if(aArray != NULL && cantidad>0)
 	{
-		retorno = 0;
+		retorno = EXIT_SUCCESS;
 		printf("\n--------------------------------LISTA DE EMPLEADOS--------------------------------\n");
-		printf("%3s | %15s | %15s | %12s | %11s\n","ID","Nombre","Apellido","Salario","Sector");
+		printf("%3s | %15s | %15s | %12s | %11s\n","ID","NOMBRE","APELLIDO","SALARIO","SECTOR");
 		for(i=0;i<cantidad;i++)
 		{
 			if(aArray[i].status==1)
@@ -211,6 +231,14 @@ int imprimirArrayEmployeesStatusOk(Employee *aArray, int cantidad)
 	}
 	return retorno;
 }
+
+/** \brief busca un empleado por ID y lo da de baja mediante el campo status (dejandolo EMPTY)
+ * \param *aArray es el array de empleados
+ * \param cantidad es la cantidad de elementos del array
+ * \param id es el ID a buscar
+ * \return -1 si hay algun error o 0 si esta bien.
+ *
+ */
 
 int bajaEmployeePorId(Employee *aArray, int cantidad,int id)
 {
@@ -229,7 +257,15 @@ int bajaEmployeePorId(Employee *aArray, int cantidad,int id)
 	return retorno;
 }
 
-int ordenarArrayEmployees(Employee *aArray, int cantidad)
+/** \brief ordena el array de empleados primero por apellido y luego por sector
+ * \param *aArray es el array de empleados
+ * \param cantidad es la cantidad de elementos del array
+ * \return -1 si hay algun error o 0 si esta bien.
+ *
+ */
+
+
+int ordenarArrayEmployeesPorApellidoYSector(Employee *aArray, int cantidad)
 {
 	int i;
 	int retorno = EXIT_ERROR;
@@ -263,6 +299,142 @@ int ordenarArrayEmployees(Employee *aArray, int cantidad)
 				}
 			}
 		}while(fSwap==1);
+	}
+	return retorno;
+}
+
+/** \brief busca un empleado por ID y te da la opcion de modificar algunos campos
+ * \param *aArray es el array de empleados
+ * \param cantidad es la cantidad de elementos del array
+ * \param id es el ID a buscar
+ * \return -1 si hay algun error o 0 si esta bien.
+ *
+ */
+
+int modificaEmployeePorId(Employee *aArray,int cantidad,int id)
+{
+
+	int retorno = EXIT_ERROR;
+	int posArray;
+	int opcion;
+	char bufferName[CANT_CARACTERES];
+	char bufferLastName[CANT_CARACTERES];
+	float bufferSalary;
+	int bufferSector;
+	Employee auxEmployee;
+
+	if(aArray != NULL && cantidad>0 && id>=0)
+	{
+		posArray = buscarEmployeePorId(aArray,cantidad,id);
+		if(posArray != -1)
+		{
+			auxEmployee = aArray[posArray];
+			getInt(&opcion,"\nQue desea modificar: [1]Nombre [2]Apellido [3]Salario [4]Sector\n",
+					"\nError!",1,4,CANT_REINTENTOS);
+			switch(opcion)
+			{
+			case 1:
+				getString(bufferName,"\nIngrese Nombre: ","\nError",1,CANT_CARACTERES,CANT_REINTENTOS);
+				retorno = esNombreOApellido(bufferName,"No es un nombre valido");
+				if(retorno == EXIT_SUCCESS)
+				{
+					strncpy(auxEmployee.name,bufferName,CANT_CARACTERES);
+				}
+				break;
+			case 2:
+				getString(bufferLastName,"\nIngrese Apellido: ","\nError",1,CANT_CARACTERES,CANT_REINTENTOS);
+				retorno = esNombreOApellido(bufferLastName,"No es un Apellido valido");
+				if(retorno == EXIT_SUCCESS)
+				{
+					strncpy(auxEmployee.lastName,bufferLastName,CANT_CARACTERES);
+				}
+				break;
+			case 3:
+				retorno = getFloat(&bufferSalary,"\nIngrese Salario: ","\nError",1,MAX_SUELDO,CANT_REINTENTOS);
+				if(retorno == EXIT_SUCCESS)
+				{
+					auxEmployee.salary=bufferSalary;
+				}
+				break;
+			case 4:
+				retorno = getInt(&bufferSector,"\nIngrese Sector: 1[Compras] - 2[Manufactura] - 3[Ventas]: ",
+						"\nError",1,3,CANT_REINTENTOS);
+				if(retorno == EXIT_SUCCESS)
+				{
+					auxEmployee.sector=bufferSector;
+				}
+				break;
+			}
+			aArray[posArray]=auxEmployee;
+		}
+	}
+	return retorno;
+}
+
+/** \brief hace calculos con el campo salario del array
+ * \param *aArray es el array de empleados
+ * \param cantidad es la cantidad de elementos del array
+ * \return -1 si hay algun error o 0 si esta bien.
+ *
+ */
+
+int calculosConSalarios(Employee *aArray, int cantidad)
+{
+	int i;
+	int retorno = EXIT_ERROR;
+	float acumSalary = 0;
+	float acumEmp = 0;
+	float promedio;
+
+	if(aArray != NULL && cantidad>0)
+	{
+		retorno = EXIT_SUCCESS;
+		for(i=0;i<cantidad;i++)
+		{
+			if(aArray[i].status == STATUS_NOT_EMPTY)
+			{
+				acumSalary = acumSalary + aArray[i].salary;
+				acumEmp=acumEmp+1;
+			}
+		}
+		promedio = acumSalary/acumEmp;
+		printf("\n\nEl TOTAL de los salarios es: $%.2f\nEl PROMEDIO de los salarios es: $%.2f\n\n",acumSalary,promedio);
+		imprimirArrayEmployeesPromedioSalario(aArray,cantidad,promedio);
+
+	}
+	return retorno;
+}
+
+/** \brief imprime el array con los elementos cargados y con el salario mayor o igual al promedio
+ * \param *aArray es el array de empleados
+ * \param cantidad es la cantidad de elementos del array
+ * \param promedio es la variable donde esta calculado el promedio de los salarios
+ * \return -1 si hay algun error o 0 si esta bien.
+ *
+ */
+
+int imprimirArrayEmployeesPromedioSalario(Employee *aArray, int cantidad,float promedio)
+{
+	int i;
+	int cantEmp = 0;
+	int retorno = EXIT_ERROR;
+	char sectorEmpleado[3][25] = {"Compras","Manufactura","Ventas"};
+
+	if(aArray != NULL && cantidad>0)
+	{
+		retorno = EXIT_SUCCESS;
+		printf("\n-----------------------EMPLEADOS QUE SUPERAN EL PROMEDIO--------------------------\n");
+		printf("%3s | %15s | %15s | %12s | %11s\n","ID","NOMBRE","APELLIDO","SALARIO","SECTOR");
+		for(i=0;i<cantidad;i++)
+		{
+			if(aArray[i].status==1 && aArray[i].salary >= promedio)
+			{
+			cantEmp++;
+			printf("%3d | %15s | %15s | $ %10.2f | %11s\n",
+			aArray[i].idEmployee,aArray[i].name,aArray[i].lastName,aArray[i].salary,sectorEmpleado[aArray[i].sector-1]);
+			}
+		}
+		printf("\nCANTIDAD DE EMPLEADOS QUE SUPERAN EL PROMEDIO: %d\n\n",cantEmp);
 	}
 	return retorno;
 }

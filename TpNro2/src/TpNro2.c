@@ -23,8 +23,10 @@ int main(void)
 	char seguir = 's';
 	char salir;
 	char confirmarBaja;
-	char nombre[50];
-	Employee unEmpleado;
+	char confirmarModif;
+	Employee unEmpleadoAlta;
+	Employee unEmpleadoBaja;
+	Employee unEmpleadoModif;
 	Employee aEmployee[CANT_EMPLEADOS];
 	int opcion;
 	int flagAlta=ALTA_DNS;
@@ -48,24 +50,60 @@ int main(void)
 	    	switch(opcion)
 	    	{
 	    		case 1:
-	    				if(altaUnSoloEmployee(&unEmpleado)==EXIT_SUCCESS)
+	    				if(altaUnSoloEmployeePorUI(&unEmpleadoAlta)==EXIT_SUCCESS)
 	    				{
-	    					altaEmployeePorId(aEmployee,CANT_EMPLEADOS,unEmpleado);
+	    					altaEmployeePorId(aEmployee,CANT_EMPLEADOS,unEmpleadoAlta);
 		    				imprimirArrayEmployeesStatusOk(aEmployee,CANT_EMPLEADOS);
 		    				flagAlta=ALTA_OK;
 	    				}
 	    				break;
 	    		case 2:
-	    				break;
+    				if(flagAlta == ALTA_DNS)
+    				{
+    					printf("\nERROR. Falta ingresar al menos un empleado.\n\n");
+    					break;
+    				}
+    				imprimirArrayEmployeesStatusOk(aEmployee,CANT_EMPLEADOS);
+    				getInt(&auxId,"\nIngrese el ID: ","\nError\n",1,CANT_EMPLEADOS,CANT_REINTENTOS);
+    				unEmpleadoModif.idEmployee = auxId;
+    				auxId = buscarEmployeePorId(aEmployee,CANT_EMPLEADOS,unEmpleadoModif.idEmployee);
+    				if(aEmployee[auxId].status== STATUS_NOT_EMPTY)
+    				{
+	    				printf("Quiere Modificar el siguiente empleado: \n");
+	    				printf("Nombre: %s - Apellido: %s - ID: %d",aEmployee[auxId].name,aEmployee[auxId].lastName,aEmployee[auxId].idEmployee);
+	    				getChar(&confirmarModif,
+	    						"\nSeguro desea Modificar? Ingrese s (o cualquier tecla para continuar): ",
+								"\nERROR. Verifique si ingreso una letra y/o desactive mayuscula\n",
+								'a',
+								'z',
+								CANT_REINTENTOS);
+                    	if(confirmarModif == 's' || confirmarModif == 'S')
+                    	{
+    	    				if(modificaEmployeePorId(aEmployee,CANT_EMPLEADOS,unEmpleadoModif.idEmployee)==EXIT_SUCCESS)
+    	    				{
+        	    				printf("\nMODIFICACION EXITOSA\n\n");
+    	    				}
+    	    				else
+    	    				{
+    	    					printf("\nERROR EN MODIFICACION\n\n");
+    	    				}
+                    	}
+    				}
+    				else
+    				{
+    					printf("\n\nNo existe empleado con ese ID\n\n");
+    				}
+    				break;
 	    		case 3:
 	    				if(flagAlta == ALTA_DNS)
 	    				{
 	    					printf("\nERROR. Falta ingresar al menos un empleado.\n\n");
 	    					break;
 	    				}
+	    				imprimirArrayEmployeesStatusOk(aEmployee,CANT_EMPLEADOS);
 	    				getInt(&auxId,"\nIngrese el ID: ","\nError\n",1,CANT_EMPLEADOS,CANT_REINTENTOS);
-	    				unEmpleado.idEmployee = auxId;
-	    				auxId = buscarEmployeePorId(aEmployee,CANT_EMPLEADOS,unEmpleado.idEmployee);
+	    				unEmpleadoBaja.idEmployee = auxId;
+	    				auxId = buscarEmployeePorId(aEmployee,CANT_EMPLEADOS,unEmpleadoBaja.idEmployee);
 	    				if(aEmployee[auxId].status== STATUS_NOT_EMPTY)
 	    				{
 		    				printf("Quiere Eliminar el siguiente empleado: \n");
@@ -78,8 +116,14 @@ int main(void)
 									CANT_REINTENTOS);
 	                    	if(confirmarBaja == 's' || confirmarBaja == 'S')
 	                    	{
-	    	    				bajaEmployeePorId(aEmployee,CANT_EMPLEADOS,unEmpleado.idEmployee);
-	    	    				printf("\nBAJA EXITOSA\ņ\ņ");
+	    	    				if(bajaEmployeePorId(aEmployee,CANT_EMPLEADOS,unEmpleadoBaja.idEmployee)==EXIT_SUCCESS)
+	    	    				{
+	    	    					printf("\nBAJA EXITOSA\n\n");
+	    	    				}
+	    	    				else
+	    	    				{
+	    	    					printf("\nERROR EN BAJA\n\n");
+	    	    				}
 	                    	}
 	    				}
 	    				else
@@ -93,9 +137,12 @@ int main(void)
     					printf("\nERROR. Falta ingresar al menos un empleado.\n\n");
     					break;
     					}
-    					ordenarArrayEmployees(aEmployee,CANT_EMPLEADOS);
+    					printf("\n-------------------------1. ORDENADO POR APELLIDO Y SECTOR------------------------\n");
+    					ordenarArrayEmployeesPorApellidoYSector(aEmployee,CANT_EMPLEADOS);
     					imprimirArrayEmployeesStatusOk(aEmployee,CANT_EMPLEADOS);
-	    				break;
+    					printf("\n------------------------------2.CALCULO CON SALARIOS------------------------------\n");
+	    				calculosConSalarios(aEmployee,CANT_EMPLEADOS);
+    					break;
 	    		case 5:
 	    				getChar(&salir,
 	    						"\nSeguro desea salir? Ingrese s (o cualquier tecla para continuar): ",

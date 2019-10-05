@@ -34,11 +34,13 @@ int initLugarLibreEmployees(Employee *aArray, int cantidad);
 int altaEmployeePorId(Employee *aArray, int cantidad,Employee employee);
 int buscarLugarLibreEmployee(Employee *aArray, int cantidad);
 int buscarEmployeePorId(Employee *aArray, int cantidad,int id);
-int altaUnSoloEmployee(Employee *employee);
+int altaUnSoloEmployeePorUI(Employee *employee);
 int imprimirArrayEmployees(Employee *aArray, int cantidad);
 int imprimirArrayEmployeesStatusOk(Employee *aArray, int cantidad);
 int bajaEmployeePorId(Employee *aArray, int cantidad,int id);
-int ordenarArrayEmployees(Employee *aArray, int cantidad);
-
+int ordenarArrayEmployeesPorApellidoYSector(Employee *aArray, int cantidad);
+int modificaEmployeePorId(Employee *aArray,int cantidad,int id);
+int calculosConSalarios(Employee *aArray, int cantidad);
+int imprimirArrayEmployeesPromedioSalario(Employee *aArray, int cantidad,float promedio);
 
 #endif /* ARRAYEMPLOYEES_H_ */
