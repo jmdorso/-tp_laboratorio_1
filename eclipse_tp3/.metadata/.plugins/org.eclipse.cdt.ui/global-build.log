@@ -1,0 +1,34 @@
+19:46:00 **** Clean-only build of configuration Debug for project tp3_linux ****
+make clean 
+rm -rf  ./Controller.o ./Employee.o ./main.o ./parser.o  ./Controller.d ./Employee.d ./main.d ./parser.d  TP3
+ 
+19:46:01 **** Build of configuration Debug for project tp3_linux ****
+make all 
+Building file: ../Controller.c
+Invoking: GCC C Compiler
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"Controller.d" -MT"Controller.o" -o "Controller.o" "../Controller.c"
+Finished building: ../Controller.c
+ 
+Building file: ../Employee.c
+Invoking: GCC C Compiler
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"Employee.d" -MT"Employee.o" -o "Employee.o" "../Employee.c"
+Finished building: ../Employee.c
+ 
+Building file: ../main.c
+Invoking: GCC C Compiler
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"main.d" -MT"main.o" -o "main.o" "../main.c"
+Finished building: ../main.c
+ 
+Building file: ../parser.c
+Invoking: GCC C Compiler
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"parser.d" -MT"parser.o" -o "parser.o" "../parser.c"
+Finished building: ../parser.c
+ 
+Building target: tp3_linux
+Invoking: GCC C Linker
+gcc  -o "tp3_linux"  ./Controller.o ./Employee.o ./main.o ./parser.o    /home/alumno/Descargas/eclipse_tp3/tp3_linux/LinkedList.a
+Finished building target: tp3_linux
+ 
+19:46:11 **** Incremental Build of configuration Debug for project tp3_linux ****
+make all 
+make: No se hace nada para 'all'.
