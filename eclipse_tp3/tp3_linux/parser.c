@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "utn.h"
 #include "LinkedList.h"
 #include "Employee.h"
 
@@ -12,7 +13,8 @@
  */
 int parser_EmployeeFromText(FILE* pFile , LinkedList* pArrayListEmployee)
 {
-	int retorno = -1;
+	int retorno = EXIT_ERROR;
+	int contVar;
 	char id[256];
 	char nombre[256];
 	char horasTrabajadas[256];
@@ -24,11 +26,23 @@ int parser_EmployeeFromText(FILE* pFile , LinkedList* pArrayListEmployee)
 	{
 		while(!feof(pFile))
 		{
-			fscanf(pFile,"%[^,],%[^,],%[^,],%[^\n]\n",id,nombre,horasTrabajadas,sueldo);
-			//empleado = newempledoparam
-			//if empl != null
-			//si da positivo ll_add(lista,empleado)
+			contVar = fscanf(pFile,"%[^,],%[^,],%[^,],%[^\n]\n",id,nombre,horasTrabajadas,sueldo);
+			if(flag==0)
+			{
+				flag=1;
+			}
+			else if(contVar == 4 && flag == 1)
+			{
+				printf("%s %s %s %s \n",id,nombre,horasTrabajadas,sueldo);
+				empleado = employee_newParametros(id,nombre,horasTrabajadas,sueldo);
+				if(empleado != NULL)
+				{
+					ll_add(pArrayListEmployee,empleado);
+					printf("\nCARGA EXITOSA\n");
+					retorno = EXIT_SUCCESS;
+				}
 
+			}
 		}
 	}
 

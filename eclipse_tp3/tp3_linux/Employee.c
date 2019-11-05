@@ -35,7 +35,7 @@ Employee* employee_newParametros(char* id,char* nombre,char* horasTrabajadas,cha
 	{
 		if(		employee_setNombre(this,nombre) == EXIT_SUCCESS &&
 				employee_setHorasTrabajadasString(this,horasTrabajadas) == EXIT_SUCCESS &&
-				//employee_setSueldoString(this,sueldo) == EXIT_SUCCESS &&
+				employee_setSueldoString(this,sueldo) == EXIT_SUCCESS &&
 				employee_setIdString(this,id) == EXIT_SUCCESS )
 		{
 				retorno = this;
@@ -108,10 +108,10 @@ static int isValidIdString(char *id)
 
 	if(id != NULL)
 	{
-		if(esSoloNumerosPositivos(id,"\nERROR"))
-		{
+		//if(esSoloNumerosPositivos(id,"\nERROR"))
+		//{
 			retorno = EXIT_SUCCESS;
-		}
+		//}
 	}
 
 	return retorno;
@@ -149,7 +149,7 @@ static int isValidNombre(char *nombre)
 
 	if(nombre != NULL)
 	{
-		esNombreOApellido(nombre,"\nERROR");
+		//esNombreOApellido(nombre,"\nERROR");
 		retorno = EXIT_SUCCESS;
 	}
 
@@ -215,10 +215,10 @@ static int isValidHorasTrabajadasString(char *horasTrabajadas)
 
 	if(horasTrabajadas != NULL)
 	{
-		if(esSoloNumerosPositivos(horasTrabajadas,"\nERROR"))
-		{
+		//if(esSoloNumerosPositivos(horasTrabajadas,"\nERROR"))
+		//{
 			retorno = EXIT_SUCCESS;
-		}
+			//}
 	}
 
 	return retorno;
@@ -283,10 +283,10 @@ static int isValidSueldoString(char *sueldo)
 
 	if(sueldo != NULL)
 	{
-		if(esSoloNumerosFlotantes(sueldo,"\nERROR"))
-		{
+		//	if(esSoloNumerosFlotantes(sueldo,"\nERROR"))
+		//{
 			retorno = EXIT_SUCCESS;
-		}
+			//}
 	}
 
 	return retorno;

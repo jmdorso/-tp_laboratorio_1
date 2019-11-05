@@ -19,7 +19,7 @@
 *****************************************************/
 
 
-
+/*
 int f1(int *a, int b,int (*foo)(int,int)) {
 	*a = *a * 2;
 	*a = foo(*a,b);
@@ -38,22 +38,22 @@ int main()
 	printf("%d %d %d",course,lets,find);
 	return 0;
 }
+*/
 
 
-/*
 int main()
 {
     int option = 0;
 
     LinkedList* listaEmpleados = ll_newLinkedList();
-    do{
-        switch(option)
-        {
-            case 1:
+    //do{
+    //    switch(option)
+    //    {
+    //        case 1:
                 controller_loadFromText("data.csv",listaEmpleados);
-                break;
-        }
-    }while(option != 10);
+                //            break;
+                //    }
+                // }while(option != 10);
     return 0;
-}*/
+}
 
