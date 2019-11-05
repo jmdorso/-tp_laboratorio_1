@@ -49,6 +49,8 @@ int controller_loadFromBinary(char* path , LinkedList* pArrayListEmployee)
  */
 int controller_addEmployee(LinkedList* pArrayListEmployee)
 {
+
+
     return 1;
 }
 
@@ -85,6 +87,18 @@ int controller_removeEmployee(LinkedList* pArrayListEmployee)
  */
 int controller_ListEmployee(LinkedList* pArrayListEmployee)
 {
+	int i;
+	Employee* aux;
+
+	if(pArrayListEmployee!=NULL)
+	{
+		printf("%4s %15s %20s %10s\n","Id","Nombre","Horas Trabajadas","Sueldo");
+		for(i=0;i<ll_len(pArrayListEmployee);i++)
+		{
+			aux = ll_get(pArrayListEmployee,i);
+			printf("%4d %15s %20d %10d\n",aux->id,aux->nombre,aux->horasTrabajadas,aux->sueldo);
+		}
+	}
     return 1;
 }
 

@@ -1,5 +1,8 @@
 #ifndef employee_H_INCLUDED
 #define employee_H_INCLUDED
+
+#define CANT_CARACTERES 128
+
 typedef struct
 {
     int id;
@@ -26,5 +29,6 @@ int employee_setHorasTrabajadasString(Employee *this,char *horasTrabajadas);
 int employee_setSueldo(Employee* this,int sueldo);
 int employee_getSueldo(Employee* this,int* sueldo);
 int employee_setSueldoString(Employee *this,char *sueldo);
+
 
 #endif // employee_H_INCLUDED

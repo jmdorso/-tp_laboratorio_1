@@ -12,6 +12,7 @@ static int isValidHorasTrabajadas(int *horasTrabajadas);
 static int isValidHorasTrabajadasString(char *horasTrabajadas);
 static int isValidSueldo(int *sueldo);
 static int isValidSueldoString(char *sueldo);
+static int generarIdEmpleado(void);
 
 
 
@@ -27,8 +28,9 @@ void employee_delete(Employee *this)
 
 Employee* employee_newParametros(char* id,char* nombre,char* horasTrabajadas,char* sueldo)
 {
-	Employee *retorno = NULL;
-	Employee *this;
+	Employee* retorno = NULL;
+	Employee* this;
+
 	this = employee_new();
 
 	if(this != NULL)
@@ -38,6 +40,7 @@ Employee* employee_newParametros(char* id,char* nombre,char* horasTrabajadas,cha
 				employee_setSueldoString(this,sueldo) == EXIT_SUCCESS &&
 				employee_setIdString(this,id) == EXIT_SUCCESS )
 		{
+				printf("\nOK!\n");
 				retorno = this;
 		}
 		else
@@ -53,7 +56,7 @@ int employee_setId(Employee* this,int id)
 {
 	int retorno = EXIT_ERROR;
 
-	if(this != NULL && isValidId(&id))
+	if(this != NULL && isValidId(&id) == EXIT_SUCCESS)
 	{
 		this->id=id;
 		retorno = EXIT_SUCCESS;
@@ -93,7 +96,7 @@ int employee_setIdString(Employee *this,char *id)
 {
 	int retorno = EXIT_ERROR;
 
-	if(this != NULL && isValidIdString(id))
+	if(this != NULL && isValidIdString(id)==EXIT_SUCCESS)
 	{
 		this->id=atoi(id);
 		retorno = EXIT_SUCCESS;
@@ -121,7 +124,7 @@ int employee_setNombre(Employee *this,char *nombre)
 {
 	int retorno = EXIT_ERROR;
 
-	if(this != NULL && isValidNombre(nombre))
+	if(this != NULL && isValidNombre(nombre)==EXIT_SUCCESS)
 	{
 		strcpy(this->nombre,nombre);
 		retorno = EXIT_SUCCESS;
@@ -160,7 +163,7 @@ int employee_setHorasTrabajadas(Employee* this,int horasTrabajadas)
 {
 	int retorno = EXIT_ERROR;
 
-	if(this != NULL && isValidHorasTrabajadas(&horasTrabajadas))
+	if(this != NULL && isValidHorasTrabajadas(&horasTrabajadas) == EXIT_SUCCESS)
 	{
 		this->horasTrabajadas=horasTrabajadas;
 		retorno = EXIT_SUCCESS;
@@ -200,7 +203,7 @@ int employee_setHorasTrabajadasString(Employee *this,char *horasTrabajadas)
 {
 	int retorno = EXIT_ERROR;
 
-	if(this != NULL && isValidHorasTrabajadasString(horasTrabajadas))
+	if(this != NULL && isValidHorasTrabajadasString(horasTrabajadas)==EXIT_SUCCESS)
 	{
 		this->horasTrabajadas=atoi(horasTrabajadas);
 		retorno = EXIT_SUCCESS;
@@ -228,7 +231,7 @@ int employee_setSueldo(Employee* this,int sueldo)
 {
 	int retorno = EXIT_ERROR;
 
-	if(this != NULL && isValidSueldo(&sueldo))
+	if(this != NULL && isValidSueldo(&sueldo) == EXIT_SUCCESS)
 	{
 		this->sueldo=sueldo;
 		retorno = EXIT_SUCCESS;
@@ -268,7 +271,7 @@ int employee_setSueldoString(Employee *this,char *sueldo)
 {
 	int retorno = EXIT_ERROR;
 
-	if(this != NULL && isValidSueldoString(sueldo))
+	if(this != NULL && isValidSueldoString(sueldo)==EXIT_SUCCESS)
 	{
 		this->sueldo=atoi(sueldo);
 		retorno = EXIT_SUCCESS;
@@ -290,4 +293,30 @@ static int isValidSueldoString(char *sueldo)
 	}
 
 	return retorno;
+}
+
+int employee_newEmployeeUI(Employee *this)
+{
+	int retorno = EXIT_ERROR;
+	char bufferNombre[CANT_CARACTERES];
+
+	if(this != NULL)
+	{
+		this->id = generarIdEmpleado();
+		getString(bufferNombre,"\nIngrese Nombre: ","\nError",1,CANT_CARACTERES,2);
+		retorno = esNombreOApellido(bufferNombre,"No es un nombre valido\n");
+		if(retorno == EXIT_SUCCESS)
+		{
+
+		}
+	}
+	return retorno;
+}
+
+static int generarIdEmpleado(void)
+{
+	static int idIncremental=1000;
+	idIncremental++;
+
+	return idIncremental;
 }
