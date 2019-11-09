@@ -46,6 +46,9 @@ int main()
 int main() {
 
 int option;
+int optionCarga;
+int modoBinario=0;
+int modoTexto=0;
 char seguir='S';
 char guardar;
 LinkedList *listaEmpleados = ll_newLinkedList();
@@ -70,7 +73,27 @@ do {
 		switch (option)
 		{
 		case 1:
-			controller_loadFromText("data.csv", listaEmpleados);
+			if(modoBinario != 1)
+			{
+				getInt(&optionCarga, "\t\nIngrese opcion: [1]dataOriginal [2]dataModificado: ", "\nError", 1, 2,CANT_REINTENTOS);
+				if(optionCarga==1)
+				{
+					controller_loadFromText("dataORIGINAL.csv", listaEmpleados);
+				}
+				if(optionCarga==2)
+				{
+					controller_loadFromText("data.csv", listaEmpleados);
+				}
+				modoTexto=1;
+			}
+			else
+			{
+				printf("\n\nYa cargo lista en el otro modo\n\n");
+			}
+			break;
+		case 2:
+			controller_loadFromBinary("data.bin",listaEmpleados);
+			modoBinario=1;
 			break;
 		case 3:
 			controller_addEmployee(listaEmpleados);
@@ -88,21 +111,50 @@ do {
 			controller_sortEmployee(listaEmpleados);
 			break;
 		case 8:
-			controller_saveAsText("data.csv",listaEmpleados);
+			if(modoTexto==1 && modoBinario==0)
+			{
+				controller_saveAsText("data.csv",listaEmpleados);
+			}
+			else
+			{
+				printf("\n\nCargo lista en el otro modo\n\n");
+			}
+			break;
+		case 9:
+			controller_saveAsBinary("data.bin",listaEmpleados);
 			break;
 		case 10:
 			getChar(&guardar,
-			"\nDesea guardar(como texto) antes de salir? Ingrese s o n (o cualquier tecla para seguir en el programa): ",
+			"\nDesea guardar antes de salir? Ingrese s o n (o cualquier tecla para seguir en el programa): ",
 			"\nERROR. Verifique si ingreso una letra y/o desactive mayuscula\n",
 			'a',
 			'z',
 			CANT_REINTENTOS);
            	if(guardar == 's' || guardar == 'S')
            	{
-           		controller_saveAsText("data.csv",listaEmpleados);
-           		ll_deleteLinkedList(listaEmpleados);
-           		printf("\n\n\tDatos guardados. El programa se cerrara...");
-           		seguir = 'n';
+    			if(modoBinario==1 && modoTexto==0)
+    			{
+    				controller_saveAsBinary("data.bin",listaEmpleados);
+               		ll_deleteLinkedList(listaEmpleados);
+               		printf("\n\n\tDatos guardados. El programa se cerrara...");
+               		seguir = 'n';
+    			}
+    			if(modoTexto==1 && modoBinario==1)
+    			{
+    				controller_saveAsText("data.csv",listaEmpleados);
+    				controller_saveAsBinary("data.bin",listaEmpleados);
+               		ll_deleteLinkedList(listaEmpleados);
+               		printf("\n\n\tDatos guardados. El programa se cerrara...");
+               		seguir = 'n';
+    			}
+    			if(modoTexto==1 && modoBinario==0)
+    			{
+    				controller_saveAsText("data.csv",listaEmpleados);
+               		ll_deleteLinkedList(listaEmpleados);
+               		printf("\n\n\tDatos guardados. El programa se cerrara...");
+               		seguir = 'n';
+    			}
+
            	}
            	else if(guardar == 'n' || guardar == 'N')
            	{

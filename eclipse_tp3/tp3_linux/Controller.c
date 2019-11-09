@@ -3,6 +3,8 @@
 #include "utn.h"
 #include "LinkedList.h"
 #include "Employee.h"
+#include "Controller.h"
+#include "parser.h"
 
 #define CRITERIO_ASCENDENTE 1
 #define CRITERIO_DESCENDENTE 0
@@ -17,8 +19,8 @@
 int controller_loadFromText(char* path , LinkedList* pArrayListEmployee)
 {
 	int retorno = EXIT_ERROR;
-
 	FILE* pFile;
+
 	pFile = fopen(path,"r");
 	if(pFile != NULL && pArrayListEmployee != NULL)
 	{
@@ -54,7 +56,45 @@ int controller_loadFromText(char* path , LinkedList* pArrayListEmployee)
  */
 int controller_loadFromBinary(char* path , LinkedList* pArrayListEmployee)
 {
-    return 1;
+	int retorno = EXIT_ERROR;
+	FILE* pFile;
+
+	pFile = fopen(path,"rb");
+	if(pFile != NULL)
+	{
+		if(ll_len(pArrayListEmployee) == 0 && pArrayListEmployee != NULL)
+		{
+			if(parser_EmployeeFromBinary(pFile,pArrayListEmployee)==EXIT_SUCCESS)
+			{
+				printf("\nCarga Exitosa. Tamaño linkedList %d\n",ll_len(pArrayListEmployee));
+				retorno=EXIT_SUCCESS;
+			}
+			else
+			{
+				printf("\nNo se pudo cargar el archivo.\n");
+			}
+		}
+		else
+		{
+			printf("\nLa Lista ya se encuentra cargada.\n");
+		}
+	}
+	else
+	{
+		pFile=fopen(path,"wb");
+		if(pFile!=NULL)
+		{
+			printf("\nSe creo un archivo binario\n");
+			retorno=EXIT_SUCCESS;
+		}
+		else
+		{
+			printf("\nNo se pudo crear el archivo\n");
+		}
+	}
+	fclose(pFile);
+
+    return retorno;
 }
 
 /** \brief Alta de empleados
@@ -424,6 +464,29 @@ int controller_saveAsText(char* path , LinkedList* pArrayListEmployee)
  */
 int controller_saveAsBinary(char* path , LinkedList* pArrayListEmployee)
 {
-    return 1;
+	int retorno = EXIT_ERROR;
+	int i;
+	Employee* this;
+	FILE* pFile;
+
+	pFile=fopen(path,"rb");
+	if(pFile != NULL && pArrayListEmployee != NULL && ll_len(pArrayListEmployee)>0)
+	{
+		pFile=fopen(path,"wb");
+		for(i=0;i<ll_len(pArrayListEmployee);i++)
+		{
+			this = employee_new();
+			if(this!=NULL)
+			{
+				this = ll_get(pArrayListEmployee,i);
+				fwrite(this,sizeof(Employee),1,pFile);
+				retorno=EXIT_SUCCESS;
+			}
+		}
+		printf("\nEl archivo se guardo correctamente\n");
+	}
+	fclose(pFile);
+
+    return retorno;
 }
 
