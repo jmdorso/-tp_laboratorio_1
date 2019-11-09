@@ -12,7 +12,6 @@ static int isValidHorasTrabajadas(int *horasTrabajadas);
 static int isValidHorasTrabajadasString(char *horasTrabajadas);
 static int isValidSueldo(int *sueldo);
 static int isValidSueldoString(char *sueldo);
-static int generarIdEmpleado(void);
 
 
 
@@ -295,28 +294,85 @@ static int isValidSueldoString(char *sueldo)
 	return retorno;
 }
 
-int employee_newEmployeeUI(Employee *this)
+Employee* employee_buscaPorId(LinkedList* pArrayListEmployee,int id)
 {
-	int retorno = EXIT_ERROR;
-	char bufferNombre[CANT_CARACTERES];
+	Employee* this = NULL;
+	int i;
 
-	if(this != NULL)
+	if(pArrayListEmployee!=NULL && id>0)
 	{
-		this->id = generarIdEmpleado();
-		getString(bufferNombre,"\nIngrese Nombre: ","\nError",1,CANT_CARACTERES,2);
-		retorno = esNombreOApellido(bufferNombre,"No es un nombre valido\n");
-		if(retorno == EXIT_SUCCESS)
+		for(i=0;i<ll_len(pArrayListEmployee);i++)
 		{
-
+			this = ll_get(pArrayListEmployee,i);
+			if(this->id == id)
+			{
+				return this;
+			}
 		}
 	}
+	return this;
+}
+
+int employee_ordenoPorId(void* pElementUno,void* pElementDos)
+{
+	int retorno = 0;
+
+	if(((Employee*)pElementUno)->id > ((Employee*)pElementDos)->id)
+	{
+		retorno = 1;
+	}
+	if(((Employee*)pElementUno)->id < ((Employee*)pElementDos)->id)
+	{
+		retorno = -1;
+	}
+
 	return retorno;
 }
 
-static int generarIdEmpleado(void)
+int employee_ordenoPorSueldo(void* pElementUno,void* pElementDos)
 {
-	static int idIncremental=1000;
-	idIncremental++;
+	int retorno = 0;
 
-	return idIncremental;
+	if(((Employee*)pElementUno)->sueldo > ((Employee*)pElementDos)->sueldo)
+	{
+		retorno = 1;
+	}
+	if(((Employee*)pElementUno)->sueldo < ((Employee*)pElementDos)->sueldo)
+	{
+		retorno = -1;
+	}
+
+	return retorno;
+}
+
+int employee_ordenoPorHorasTrabajadas(void* pElementUno,void* pElementDos)
+{
+	int retorno = 0;
+
+	if(((Employee*)pElementUno)->horasTrabajadas > ((Employee*)pElementDos)->horasTrabajadas)
+	{
+		retorno = 1;
+	}
+	if(((Employee*)pElementUno)->horasTrabajadas < ((Employee*)pElementDos)->horasTrabajadas)
+	{
+		retorno = -1;
+	}
+
+	return retorno;
+}
+
+int employee_ordenoPorNombre(void* pElementUno,void* pElementDos)
+{
+	int retorno = 0;
+
+	if(strncmp(((Employee *)pElementUno)->nombre,((Employee *)pElementDos)->nombre,CANT_CARACTERES)>0)
+	{
+		retorno = 1;
+	}
+	if(strncmp(((Employee *)pElementUno)->nombre,((Employee *)pElementDos)->nombre,CANT_CARACTERES)<0)
+	{
+		retorno = -1;
+	}
+
+	return retorno;
 }

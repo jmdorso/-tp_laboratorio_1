@@ -9,6 +9,7 @@
 #define UTN_H_
 
 #define EXIT_ERROR -1
+#define CANT_REINTENTOS 2
 
 int getString(	char *pResultado,
 				char *pMensaje,

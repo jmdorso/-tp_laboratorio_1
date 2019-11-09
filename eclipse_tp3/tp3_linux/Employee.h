@@ -1,7 +1,12 @@
 #ifndef employee_H_INCLUDED
 #define employee_H_INCLUDED
 
+#include "LinkedList.h"
+#include "utn.h"
+
 #define CANT_CARACTERES 128
+#define CANT_HORAS 1000
+#define CANT_SUELDO 1000000
 
 typedef struct
 {
@@ -30,5 +35,10 @@ int employee_setSueldo(Employee* this,int sueldo);
 int employee_getSueldo(Employee* this,int* sueldo);
 int employee_setSueldoString(Employee *this,char *sueldo);
 
+Employee* employee_buscaPorId(LinkedList* pArrayListEmployee,int id);
+int employee_ordenoPorSueldo(void* pElementUno,void* pElementDos);
+int employee_ordenoPorId(void* pElementUno,void* pElementDos);
+int employee_ordenoPorHorasTrabajadas(void* pElementUno,void* pElementDos);
+int employee_ordenoPorNombre(void* pElementUno,void* pElementDos);
 
 #endif // employee_H_INCLUDED

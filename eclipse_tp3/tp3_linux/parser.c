@@ -33,7 +33,7 @@ int parser_EmployeeFromText(FILE* pFile , LinkedList* pArrayListEmployee)
 			}
 			else if(contVar == 4 && flag == 1)
 			{
-				printf("%s %s %s %s \n",id,nombre,horasTrabajadas,sueldo);
+				//printf("%s %s %s %s \n",id,nombre,horasTrabajadas,sueldo);
 				this = employee_new();
 				//this = employee_newParametros(id,nombre,horasTrabajadas,sueldo);
 				if(this != NULL)
@@ -43,7 +43,7 @@ int parser_EmployeeFromText(FILE* pFile , LinkedList* pArrayListEmployee)
 					employee_setHorasTrabajadasString(this,horasTrabajadas);
 					employee_setSueldoString(this,sueldo);
 					ll_add(pArrayListEmployee,this);
-					printf("\nCARGA EXITOSA\n");
+					//printf("\nCARGA EXITOSA\n");
 					retorno = EXIT_SUCCESS;
 				}
 
@@ -63,8 +63,8 @@ int parser_EmployeeFromText(FILE* pFile , LinkedList* pArrayListEmployee)
  */
 int parser_EmployeeFromBinary(FILE* pFile , LinkedList* pArrayListEmployee)
 {
-/*	int retorno = EXIT_ERROR;
-	int contVar;
+	int retorno = EXIT_ERROR;
+	/*	int contVar;
 	char id[256];
 	char nombre[256];
 	char horasTrabajadas[256];
@@ -100,6 +100,6 @@ int parser_EmployeeFromBinary(FILE* pFile , LinkedList* pArrayListEmployee)
 			}
 		}
 	}
-
-    return retorno;*/
+*/
+    return retorno;
 }
