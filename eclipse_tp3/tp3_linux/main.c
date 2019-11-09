@@ -47,6 +47,7 @@ int main() {
 
 int option;
 char seguir='S';
+char guardar;
 LinkedList *listaEmpleados = ll_newLinkedList();
 
 do {
@@ -86,9 +87,33 @@ do {
 		case 7:
 			controller_sortEmployee(listaEmpleados);
 			break;
+		case 8:
+			controller_saveAsText("data.csv",listaEmpleados);
+			break;
 		case 10:
-			printf("\n\nEl programa se cerrara...\n");
-			seguir='n';
+			getChar(&guardar,
+			"\nDesea guardar(como texto) antes de salir? Ingrese s o n (o cualquier tecla para seguir en el programa): ",
+			"\nERROR. Verifique si ingreso una letra y/o desactive mayuscula\n",
+			'a',
+			'z',
+			CANT_REINTENTOS);
+           	if(guardar == 's' || guardar == 'S')
+           	{
+           		controller_saveAsText("data.csv",listaEmpleados);
+           		ll_deleteLinkedList(listaEmpleados);
+           		printf("\n\n\tDatos guardados. El programa se cerrara...");
+           		seguir = 'n';
+           	}
+           	else if(guardar == 'n' || guardar == 'N')
+           	{
+           		ll_deleteLinkedList(listaEmpleados);
+    			printf("\n\n\tNo se guardaran los datos. El programa se cerrara...\n");
+    			seguir='n';
+           	}
+           	else
+           	{
+           		printf("\n\n\tContinuar con el programa..\n");
+           	}
 			break;
 		}
 	}
