@@ -17,6 +17,8 @@ LinkedList* ll_newLinkedList(void)
 {
     LinkedList* this= NULL;
     this = malloc(sizeof(LinkedList));
+    this->size=0;
+    this->pFirstNode=NULL;
     return this;
 }
 
@@ -304,14 +306,14 @@ int ll_indexOf(LinkedList* this, void* pElement)
 {
     int returnAux = -1;
     int i;
-    Node* pNodo;
+    void* pElementAux;
 
     if(this != NULL)
     {
     	for(i=0;i<ll_len(this);i++)
     	{
-    		pNodo = getNode(this,i);
-    		if(pElement == pNodo->pElement)
+    		pElementAux = ll_get(this,i);
+    		if(pElement == pElementAux)
     		{
     			returnAux = i;
     		}
@@ -433,24 +435,27 @@ int ll_containsAll(LinkedList* this,LinkedList* this2)
 {
     int returnAux = -1;
     int i;
-    Node* pNodo;
+    void* pElement;
 
     if(this != NULL && this2 != NULL)
     {
-    	returnAux=1;
-    	if(this->size < this2->size)
+
+    	if(this2->size == 0)
     	{
         	returnAux=0;
     	}
+    	returnAux=1;
     	for(i=0;i<ll_len(this2);i++)
     	{
-    		pNodo = getNode(this2,i);
-    		if(ll_contains(this,pNodo->pElement)!=1)
+    		pElement = ll_get(this2,i);
+    		if(ll_contains(this,pElement)!=1)
     		{
     			returnAux=0;
     			break;
     		}
     	}
+
+
     }
 
     return returnAux;
@@ -517,7 +522,69 @@ LinkedList* ll_clone(LinkedList* this)
  */
 int ll_sort(LinkedList* this, int (*pFunc)(void* ,void*), int order)
 {
-    int returnAux =-1;
+    int returnAux = -1;
+	int j,i;
+	int flagNoEstaOrdenadoAsc = 1;
+	int flagNoEstaOrdenadoDes = 1;
+
+	Node* auxNodo;
+	Node* nodoUno;
+	Node* nodoDos;
+
+	void* aux;
+	void* pElementUno;
+	void* pElementDos;
+
+    if(this != NULL && pFunc != NULL && ll_len(this) > 0 && (order == 1 || order == 0))
+    {
+        if (order == 1)
+        {
+
+       	while (flagNoEstaOrdenadoAsc==1)
+          	 {
+      			 flagNoEstaOrdenadoAsc = 0;
+      			 for (j = 0; j < ll_len(this)-1; j++)
+      			 {
+      				 pElementUno=ll_get(this,j);
+      				 pElementDos=ll_get(this,j+1);
+      				 if(pFunc(pElementUno, pElementDos) > 0)
+          			{
+                       		aux=pElementUno;
+                       		pElementUno=ll_set(this,j,pElementDos);
+                       		pElementDos=ll_set(this,j+1,aux);
+          					flagNoEstaOrdenadoAsc = 1;
+          			}
+      			}
+          	 }
+        }
+        else
+        {
+
+          	while (flagNoEstaOrdenadoDes==1)
+             	 {
+          		flagNoEstaOrdenadoDes = 0;
+         			 for (j = 0; j < ll_len(this)-1; j++)
+         			 {
+         				 pElementUno=ll_get(this,j);
+         				 pElementDos=ll_get(this,j+1);
+
+            				 if(pFunc((pElementUno), (pElementDos)) <0)
+            				 {
+                            		aux=pElementUno;
+                            		ll_set(this,j,pElementDos);
+                            		ll_set(this,j+1,aux);
+               					flagNoEstaOrdenadoDes = 1;
+            				}
+
+
+         			 }
+             	 }
+        }
+        returnAux = 0;
+
+
+
+    }
 
     return returnAux;
 
