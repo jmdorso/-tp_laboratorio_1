@@ -523,13 +523,9 @@ LinkedList* ll_clone(LinkedList* this)
 int ll_sort(LinkedList* this, int (*pFunc)(void* ,void*), int order)
 {
     int returnAux = -1;
-	int j,i;
+	int j;
 	int flagNoEstaOrdenadoAsc = 1;
 	int flagNoEstaOrdenadoDes = 1;
-
-	Node* auxNodo;
-	Node* nodoUno;
-	Node* nodoDos;
 
 	void* aux;
 	void* pElementUno;
@@ -590,3 +586,88 @@ int ll_sort(LinkedList* this, int (*pFunc)(void* ,void*), int order)
 
 }
 
+/** \brief Modifica un campo del elemento utilizando la funcion criterio recibida como parametro
+ * \param pList LinkedList* Puntero a la lista
+ * \param pFunc (*pFunc) Puntero a la funcion criterio
+ * \return int Retorna  (-1) Error: si el puntero a la listas es NULL
+                                ( 0) Si ok
+ */
+
+
+int ll_map(LinkedList* this, void (*pFunc)(void*))
+{
+	int returnAux = -1;
+	int i;
+	void* pElement;
+
+	if(this != NULL && pFunc != NULL && ll_len(this) > 0)
+	{
+		for(i=0;i<ll_len(this);i++)
+		{
+			pElement = ll_get(this,i);
+			pFunc(pElement);
+			returnAux = 0;
+		}
+	}
+
+	return returnAux;
+}
+
+/** \brief Crea una nueva lista con elementos filtrados de una lista base, utilizando la funcion criterio recibida como parametro
+ * \param pList LinkedList* Puntero a la lista original
+ * \param pFunc (*pFunc) Puntero a la funcion criterio
+ * \return LinkedList* Retorna  (NULL) Error: si el puntero a la listas es NULL
+                                (puntero a la nueva lista) Si ok
+ */
+
+
+LinkedList* ll_filter(LinkedList* this, int (*pFunc)(void*))
+{
+	LinkedList* listaFiltrada = NULL;
+	int i;
+	void* pElement;
+
+
+	listaFiltrada = ll_newLinkedList();
+	if(this != NULL && pFunc != NULL && ll_len(this) > 0 && listaFiltrada != NULL)
+	{
+		for(i=0;i<ll_len(this);i++)
+		{
+			pElement = ll_get(this,i);
+			if(pFunc(pElement)==1)
+			{
+				ll_add(listaFiltrada,pElement);
+			}
+		}
+	}
+
+	return listaFiltrada;
+}
+
+/** \brief Reduce la lista, dando de baja elementos, utilizando la funcion criterio recibida como parametro
+ * \param pList LinkedList* Puntero a la lista original
+ * \param pFunc (*pFunc) Puntero a la funcion criterio
+ * \return LinkedList* Retorna  (NULL) Error: si el puntero a la listas es NULL
+                                (lista modificada) Si ok
+ */
+
+LinkedList* ll_reduce(LinkedList* this,int (*pFunc)(void*))
+{
+	int i;
+	void* pElement;
+
+	if(this != NULL && pFunc != NULL && ll_len(this) > 0)
+	{
+		for(i=0;i<ll_len(this);i++)
+		{
+			pElement = ll_get(this,i);
+			if(pFunc(pElement)==1)
+			{
+				ll_remove(this,i);
+				i--;
+			}
+		}
+	}
+
+	return this;
+}
