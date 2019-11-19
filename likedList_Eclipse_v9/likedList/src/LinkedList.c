@@ -232,7 +232,7 @@ int ll_remove(LinkedList* this,int index)
     			this->pFirstNode=pNodeAuxSig;
 
     		}
-    		else if(index>0 && index <= ll_len(this-1))
+    		else if(index>0 && index <= ll_len(this))
     		{
     	    	pNodeAuxAnt = getNode(this, index-1);
     	    	pNodeAuxSig = getNode(this, index+1);
